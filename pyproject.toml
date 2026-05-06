@@ -1,7 +1,9 @@
 [project]
 name = "agent-loop"
 version = "0.1.0"
-description = "Add your description here"
+description = "Building an AI agent from first principles with Python and the OpenAI Responses API"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "pydantic>=2.13.4",
+]
