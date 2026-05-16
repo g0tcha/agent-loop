@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-from .message import Message
-from .tool_definition import ToolDefinition
+from agent_loop.models.message import Message
+from agent_loop.models.tool_definition import ToolDefinition
 
 
 class LLMRequest(BaseModel):

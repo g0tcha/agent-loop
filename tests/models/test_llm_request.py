@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from agent_loop.models.llm_request import LLMRequest
+from agent_loop.llm.models.llm_request import LLMRequest
 from agent_loop.models.message import Message
 from agent_loop.models.tool_definition import ToolDefinition
 
