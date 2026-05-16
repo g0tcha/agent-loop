@@ -4,7 +4,7 @@ from agent_loop.config import settings
 from agent_loop.llm.models.llm_request import LLMRequest
 from agent_loop.llm.models.llm_response import LLMResponse
 from agent_loop.llm.providers.openai.mapper import OpenAIMapper
-from agent_loop.llm.providers.openai.transport import HTTPTransport
+from agent_loop.core.http.transport import HTTPTransport
 
 _CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
 
@@ -25,6 +25,5 @@ class OpenAIClient:
             "Authorization": f"Bearer {settings.openai_api_key}",
             "Content-Type": "application/json",
         }
-        raw = self._transport.post(_CHAT_COMPLETIONS_URL, headers, body)
-        data = json.loads(raw.decode("utf-8"))
+        data = self._transport.post_json(_CHAT_COMPLETIONS_URL, headers, body)
         return self._mapper.response_body_to_llm_response(data)

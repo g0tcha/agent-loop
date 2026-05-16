@@ -3,6 +3,7 @@ from typing import Any, Literal
 
 from agent_loop.llm.models.llm_request import LLMRequest
 from agent_loop.llm.models.llm_response import LLMResponse
+from agent_loop.llm.providers.openai.exception import OpenAIInvalidResponseError
 from agent_loop.models.tool_call import ToolCall
 from agent_loop.models.usage import Usage
 
@@ -69,7 +70,7 @@ class OpenAIMapper:
         choices = data.get("choices") or []
         if not choices:
             msg = "Réponse OpenAI sans choix (choices vides)."
-            raise ValueError(msg)
+            raise OpenAIInvalidResponseError(msg)
 
         choice0 = choices[0]
         message = choice0.get("message") or {}
