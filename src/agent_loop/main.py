@@ -1,4 +1,4 @@
-from agent_loop.llm.models.llm_request import LLMRequest
+from agent_loop.models.llm_request import LLMRequest
 from agent_loop.llm.providers.openai.client import OpenAIClient
 from agent_loop.models.message import Message
 

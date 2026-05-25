@@ -1,8 +1,8 @@
 import json
 
 from agent_loop.config import settings
-from agent_loop.llm.models.llm_request import LLMRequest
-from agent_loop.llm.models.llm_response import LLMResponse
+from agent_loop.models.llm_request import LLMRequest
+from agent_loop.models.llm_response import LLMResponse
 from agent_loop.llm.providers.openai.mapper import OpenAIMapper
 from agent_loop.core.http.transport import HTTPTransport
 
