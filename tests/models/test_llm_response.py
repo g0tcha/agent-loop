@@ -29,7 +29,7 @@ def test_llm_response_tool_calls_default_empty() -> None:
 def test_llm_response_with_tool_calls() -> None:
     r = LLMResponse(
         output_text=None,
-        tool_calls=[ToolCall(tool_name="t", tool_args={"a": 1})],
+        tool_calls=[ToolCall(id="call_1", tool_name="t", tool_args={"a": 1})],
         finish_reason="tool_calls",
         usage=_usage(),
     )

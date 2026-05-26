@@ -13,8 +13,38 @@ _FINISH_REASONS = frozenset({"stop", "tool_calls", "length"})
 class OpenAIMapper:
     """Construction du corps de requête et lecture de la réponse OpenAI."""
 
-    def messages_payload(self, request: LLMRequest) -> list[dict[str, str]]:
-        return [{"role": m.role, "content": m.content} for m in request.messages]
+    def messages_payload(self, request: LLMRequest) -> list[dict[str, Any]]:
+        out: list[dict[str, Any]] = []
+        for m in request.messages:
+            if m.role == "assistant" and m.tool_calls:
+                out.append(
+                    {
+                        "role": "assistant",
+                        "content": m.content or None,
+                        "tool_calls": [
+                            {
+                                "id": tc.id,
+                                "type": "function",
+                                "function": {
+                                    "name": tc.tool_name,
+                                    "arguments": json.dumps(tc.tool_args),
+                                },
+                            }
+                            for tc in m.tool_calls
+                        ],
+                    }
+                )
+            elif m.role == "tool":
+                out.append(
+                    {
+                        "role": "tool",
+                        "content": m.content,
+                        "tool_call_id": m.tool_call_id,
+                    }
+                )
+            else:
+                out.append({"role": m.role, "content": m.content})
+        return out
 
     def tools_payload(self, request: LLMRequest) -> list[dict[str, Any]] | None:
         if not request.tools:
@@ -51,7 +81,13 @@ class OpenAIMapper:
                 args = raw_args
             else:
                 args = {}
-            out.append(ToolCall(tool_name=name, tool_args=args))
+            out.append(
+                ToolCall(
+                    id=str(tc.get("id", "")),
+                    tool_name=name,
+                    tool_args=args,
+                )
+            )
         return out
 
     def request_to_payload(self, request: LLMRequest, model: str) -> dict[str, Any]:
